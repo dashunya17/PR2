@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "990020764638",
+    "firebase_url": "https://potteryschool-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "potteryschool",
+    "storage_bucket": "potteryschool.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990020764638:android:0bc1664c6c64c82603934f",
+        "android_client_info": {
+          "package_name": "com.example.pr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcwL5psBx7jPzD3scQlamycf20eB9REVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990020764638:android:80fb4b3e0912abe503934f",
+        "android_client_info": {
+          "package_name": "com.example.praktika"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcwL5psBx7jPzD3scQlamycf20eB9REVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990020764638:android:015251c5f04d082403934f",
+        "android_client_info": {
+          "package_name": "com.mycompany.myapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcwL5psBx7jPzD3scQlamycf20eB9REVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
