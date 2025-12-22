@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Название услуги -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Название услуги*"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/editDialogName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Введите название"
+            android:inputType="textCapWords"/>
+
+        <!-- Описание -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Описание"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/editDialogDescription"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="Введите описание"
+            android:inputType="textMultiLine"
+            android:gravity="top"/>
+
+        <!-- Имя тренера -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Имя тренера*"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/editDialogTrainerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Введите имя тренера"
+            android:inputType="textPersonName"/>
+
+        <!-- Дата -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Дата*"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/editDialogData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Дата (дд.мм.гггг)"
+            android:inputType="date"
+            android:focusable="false"/>
+
+        <Button
+            android:id="@+id/editDialogButtonDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Выбрать дату"/>
+
+        <!-- Время -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Время*"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/editDialogTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Время (чч:мм)"
+            android:inputType="time"
+            android:focusable="false"/>
+
+        <Button
+            android:id="@+id/editDialogButtonTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Выбрать время"/>
+
+        <!-- Цена -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Цена (руб)*"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/editDialogPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Введите цену"
+            android:inputType="numberDecimal"/>
+
+        <!-- Продолжительность -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Продолжительность (мин)*"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/editDialogDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Введите продолжительность"
+            android:inputType="number"/>
+
+        <!-- Максимум клиентов -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Максимум клиентов*"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/editDialogMaxClients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Введите максимальное количество"
+            android:inputType="number"/>
+
+        <!-- Доступные места -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Доступные места*"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/editDialogAvailableSeats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Введите количество доступных мест"
+            android:inputType="number"/>
+
+    </LinearLayout>
+</ScrollView>

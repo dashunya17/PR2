@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Заголовок с кнопкой удаления -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- Имя клиента -->
+                <TextView
+                    android:id="@+id/textViewClient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Иванов Иван"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- Телефон -->
+                <TextView
+                    android:id="@+id/textViewPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Тел: +7 (999) 123-45-67"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_marginTop="4dp"/>
+
+            </LinearLayout>
+
+            <!-- Кнопка удаления -->
+            <ImageButton
+                android:id="@+id/buttonDelete"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackground"
+                android:src="@android:drawable/ic_menu_delete"
+                android:contentDescription="Удалить запись"
+                app:tint="#F44336"/>
+
+        </LinearLayout>
+
+        <!-- Количество клиентов -->
+        <TextView
+            android:id="@+id/textViewClients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Клиентов: 2"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Услуга -->
+        <TextView
+            android:id="@+id/textViewService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Услуга: Фитнес-тренировка"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"/>
+
+        <!-- Дата записи -->
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Запись: 01.01.2023 10:30"
+            android:textSize="12sp"
+            android:textColor="#757575"
+            android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
