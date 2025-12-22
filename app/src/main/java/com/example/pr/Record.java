@@ -18,7 +18,6 @@ public class Record {
     private String status;
 
     public Record() {
-        // Пустой конструктор для Firestore
     }
 
     public Record(String IdService, String surname, String name, String phone,
@@ -38,7 +37,6 @@ public class Record {
         this.status = "pending";
     }
 
-    // Геттеры и сеттеры
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 

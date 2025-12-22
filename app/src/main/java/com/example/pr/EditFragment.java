@@ -46,7 +46,6 @@ public class EditFragment extends Fragment {
 
     private FirebaseFirestore db;
 
-    // Диалог для редактирования
     private AlertDialog editDialog;
     private EditText editDialogName, editDialogDescription, editDialogTrainerName;
     private EditText editDialogPrice, editDialogDuration, editDialogMaxClients;
@@ -62,60 +61,47 @@ public class EditFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit, container, false);
 
-        // Инициализация Firestore
         db = FirebaseFirestore.getInstance();
         calendar = Calendar.getInstance();
         serviceList = new ArrayList<>();
 
-        // Инициализация UI
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
         tvEmpty = view.findViewById(R.id.tvEmpty);
 
-        // Настройка RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ServiceAdapter(serviceList, new ServiceAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 showServiceDetails(position);
             }
-
             @Override
             public void onEditClick(int position) {
                 showEditDialog(position);
             }
-
             @Override
             public void onDeleteClick(int position) {
                 showDeleteConfirmation(position);
             }
         });
         recyclerView.setAdapter(adapter);
-
-        // Загрузка данных
         loadServices();
-
         return view;
     }
 
     private void loadServices() {
         progressBar.setVisibility(View.VISIBLE);
         tvEmpty.setVisibility(View.GONE);
-
-        // ИСПРАВЛЕНО: Используем "service" вместо "services"
-        db.collection("service") // <- Вот здесь была ошибка!
+        db.collection("service")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         progressBar.setVisibility(View.GONE);
-
                         if (task.isSuccessful()) {
                             serviceList.clear();
-
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 try {
-                                    // Получаем данные из документа
                                     String name = document.getString("name");
                                     String description = document.getString("description");
                                     String trainerName = document.getString("trainerName");
@@ -127,7 +113,6 @@ public class EditFragment extends Fragment {
                                     Long maxClients = document.getLong("maxClients");
                                     Long availableSeats = document.getLong("availableSeats");
 
-                                    // Создаем объект Service
                                     Service service = new Service();
                                     service.setId(document.getId());
                                     service.setName(name != null ? name : "Не указано");
@@ -139,7 +124,6 @@ public class EditFragment extends Fragment {
                                     service.setDuration(duration != null ? duration.intValue() : 0);
                                     service.setMaxClients(maxClients != null ? maxClients.intValue() : 0);
                                     service.setAvailableSeats(availableSeats != null ? availableSeats.intValue() : 0);
-
                                     serviceList.add(service);
 
                                 } catch (Exception e) {
@@ -150,8 +134,6 @@ public class EditFragment extends Fragment {
                             }
 
                             adapter.updateData(serviceList);
-
-                            // Показываем сообщение, если список пуст
                             if (serviceList.isEmpty()) {
                                 tvEmpty.setText("Нет доступных услуг");
                                 tvEmpty.setVisibility(View.VISIBLE);
@@ -217,8 +199,6 @@ public class EditFragment extends Fragment {
         }
 
         progressBar.setVisibility(View.VISIBLE);
-
-        // ИСПРАВЛЕНО: Используем "service" вместо "services"
         db.collection("service").document(documentId)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -229,7 +209,6 @@ public class EditFragment extends Fragment {
                         adapter.notifyItemRemoved(position);
                         Toast.makeText(getContext(), "Услуга удалена", Toast.LENGTH_SHORT).show();
 
-                        // Обновляем отображение пустого списка
                         if (serviceList.isEmpty()) {
                             tvEmpty.setText("Нет доступных услуг");
                             tvEmpty.setVisibility(View.VISIBLE);
@@ -252,7 +231,6 @@ public class EditFragment extends Fragment {
         Service service = serviceList.get(position);
         currentEditDocumentId = service.getId();
 
-        // Создание диалога
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_edit_service, null);
@@ -267,7 +245,6 @@ public class EditFragment extends Fragment {
 
         editDialog = builder.create();
 
-        // Переопределяем обработчик кнопки "Сохранить"
         editDialog.setOnShowListener(dialog -> {
             Button saveButton = editDialog.getButton(AlertDialog.BUTTON_POSITIVE);
             saveButton.setOnClickListener(v -> updateService());
@@ -289,7 +266,6 @@ public class EditFragment extends Fragment {
         editDialogButtonDate = dialogView.findViewById(R.id.editDialogButtonDate);
         editDialogButtonTime = dialogView.findViewById(R.id.editDialogButtonTime);
 
-        // Настройка выбора даты и времени
         if (editDialogButtonDate != null) {
             editDialogButtonDate.setOnClickListener(v -> showDatePickerDialog());
         }
@@ -350,14 +326,12 @@ public class EditFragment extends Fragment {
     }
 
     private void updateService() {
-        // Валидация полей
         if (editDialogName == null || TextUtils.isEmpty(editDialogName.getText().toString())) {
             if (editDialogName != null) editDialogName.setError("Введите название");
             return;
         }
 
-        try {
-            // Подготовка данных для обновления
+            try {
             Map<String, Object> updates = new HashMap<>();
             updates.put("name", editDialogName.getText().toString());
             updates.put("description", editDialogDescription != null ? editDialogDescription.getText().toString() : "");
@@ -370,8 +344,6 @@ public class EditFragment extends Fragment {
             updates.put("availableSeats", editDialogAvailableSeats != null ? Integer.parseInt(editDialogAvailableSeats.getText().toString()) : 0);
 
             progressBar.setVisibility(View.VISIBLE);
-
-            // ИСПРАВЛЕНО: Используем "service" вместо "services"
             db.collection("service").document(currentEditDocumentId)
                     .update(updates)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -381,8 +353,6 @@ public class EditFragment extends Fragment {
                             if (editDialog != null) {
                                 editDialog.dismiss();
                             }
-
-                            // Обновление локального списка
                             loadServices();
                             Toast.makeText(getContext(), "Услуга обновлена", Toast.LENGTH_SHORT).show();
                         }

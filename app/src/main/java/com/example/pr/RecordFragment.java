@@ -52,20 +52,12 @@ public class RecordFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_record, container, false);
-
-        // Инициализация Firestore
         db = FirebaseFirestore.getInstance();
         calendar = Calendar.getInstance();
         servicesList = new ArrayList<>();
         recordList = new ArrayList<>();
-
-        // Инициализация UI элементов
         initViews(view);
-
-        // Устанавливаем сегодняшнюю дату по умолчанию
         setCurrentDate();
-
-        // Загружаем услуги на выбранную дату
         loadServicesForDate(selectedDate);
 
         return view;
@@ -79,8 +71,6 @@ public class RecordFragment extends Fragment {
         btnSelectDate = view.findViewById(R.id.btnSelectDate);
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
-
-        // Настройка RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recordAdapter = new RecordAdapter(recordList, new RecordAdapter.OnItemClickListener() {
             @Override
@@ -94,14 +84,10 @@ public class RecordFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(recordAdapter);
-
-        // Настройка адаптера для Spinner
         servicesAdapter = new ArrayAdapter<>(requireContext(),
                 android.R.layout.simple_spinner_item, new ArrayList<String>());
         servicesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerServices.setAdapter(servicesAdapter);
-
-        // Обработчик выбора услуги из Spinner
         spinnerServices.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -124,8 +110,6 @@ public class RecordFragment extends Fragment {
                 selectedService = null;
             }
         });
-
-        // Обработчик кнопки выбора даты
         btnSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,7 +138,6 @@ public class RecordFragment extends Fragment {
                         selectedDate = dateFormat.format(calendar.getTime());
                         tvSelectedDate.setText("Выбранная дата: " + selectedDate);
 
-                        // Загружаем услуги на новую дату
                         loadServicesForDate(selectedDate);
                     }
                 },
@@ -173,7 +156,6 @@ public class RecordFragment extends Fragment {
         servicesAdapter.add("-- Все услуги --");
         selectedService = null;
 
-        // Очищаем список записей
         recordList.clear();
         recordAdapter.notifyDataSetChanged();
         updateTotalRecords();
@@ -181,7 +163,6 @@ public class RecordFragment extends Fragment {
         tvEmpty.setText("Выберите услугу для просмотра записей");
         recyclerView.setVisibility(View.GONE);
 
-        // Загружаем услуги на выбранную дату
         db.collection("service")
                 .whereEqualTo("data", date)
                 .get()
@@ -193,13 +174,11 @@ public class RecordFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 try {
-                                    // Получаем данные услуги
                                     String name = document.getString("name");
                                     String trainerName = document.getString("trainerName");
                                     String data = document.getString("data");
                                     String time = document.getString("time");
 
-                                    // Создаем объект Service
                                     Service service = new Service();
                                     service.setId(document.getId());
                                     service.setName(name != null ? name : "Не указано");
@@ -209,7 +188,6 @@ public class RecordFragment extends Fragment {
 
                                     servicesList.add(service);
 
-                                    // Формируем строку для отображения в Spinner
                                     String serviceInfo = service.getName() +
                                             " (" + service.getTime() + ")";
                                     servicesAdapter.add(serviceInfo);
@@ -228,7 +206,6 @@ public class RecordFragment extends Fragment {
                                         "На выбранную дату нет услуг",
                                         Toast.LENGTH_SHORT).show();
                             } else {
-                                // Если есть услуги, выбираем первую по умолчанию
                                 spinnerServices.setSelection(1);
                             }
 
@@ -246,7 +223,6 @@ public class RecordFragment extends Fragment {
         recordList.clear();
         recordAdapter.notifyDataSetChanged();
 
-        // Загружаем записи для выбранной услуги
         db.collection("record")
                 .whereEqualTo("IdService", serviceId)
                 .get()
@@ -258,7 +234,6 @@ public class RecordFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 try {
-                                    // Получаем данные записи
                                     String surname = document.getString("surname");
                                     String name = document.getString("name");
                                     String phone = document.getString("phone");
@@ -269,7 +244,6 @@ public class RecordFragment extends Fragment {
                                     String serviceTime = document.getString("serviceTime");
                                     Double totalPrice = document.getDouble("totalPrice");
 
-                                    // Создаем объект Record
                                     Record record = new Record();
                                     record.setId(document.getId());
                                     record.setIdService(serviceId);
@@ -294,8 +268,6 @@ public class RecordFragment extends Fragment {
 
                             recordAdapter.notifyDataSetChanged();
                             updateTotalRecords();
-
-                            // Показываем сообщение, если список пуст
                             if (recordList.isEmpty()) {
                                 tvEmpty.setText("Нет записей на эту услугу");
                                 tvEmpty.setVisibility(View.VISIBLE);
@@ -342,7 +314,6 @@ public class RecordFragment extends Fragment {
 
         Record record = recordList.get(position);
 
-        // Создаем диалог с деталями записи
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(requireContext());
         builder.setTitle("Детали записи #" + record.getId().substring(0, 8));
 
@@ -359,8 +330,6 @@ public class RecordFragment extends Fragment {
 
         builder.setMessage(details);
         builder.setPositiveButton("OK", null);
-
-        // Кнопка для копирования номера телефона
         builder.setNeutralButton("Копировать телефон", (dialog, which) -> {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager)
                     requireContext().getSystemService(android.content.Context.CLIPBOARD_SERVICE);
@@ -370,7 +339,6 @@ public class RecordFragment extends Fragment {
             Toast.makeText(requireContext(), "Номер скопирован", Toast.LENGTH_SHORT).show();
         });
 
-        // Кнопка для удаления записи (только для администратора)
         builder.setNegativeButton("Удалить", (dialog, which) -> {
             deleteRecordWithConfirmation(position);
         });
@@ -400,7 +368,6 @@ public class RecordFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        // Удаляем запись из Firestore
         db.collection("record")
                 .document(recordId)
                 .delete()
@@ -410,17 +377,14 @@ public class RecordFragment extends Fragment {
                         progressBar.setVisibility(View.GONE);
 
                         if (task.isSuccessful()) {
-                            // Увеличиваем количество доступных мест в услуге
                             updateServiceAvailableSeats(record.getIdService(), record.getNumberClients());
 
-                            // Удаляем из локального списка
                             recordList.remove(position);
                             recordAdapter.notifyItemRemoved(position);
                             updateTotalRecords();
 
                             Toast.makeText(requireContext(), "Запись удалена", Toast.LENGTH_SHORT).show();
 
-                            // Обновляем отображение
                             if (recordList.isEmpty()) {
                                 tvEmpty.setText("Нет записей на эту услугу");
                                 tvEmpty.setVisibility(View.VISIBLE);
@@ -437,7 +401,6 @@ public class RecordFragment extends Fragment {
     }
 
     private void updateServiceAvailableSeats(String serviceId, int numberClients) {
-        // Получаем текущее количество мест
         db.collection("service")
                 .document(serviceId)
                 .get()
@@ -449,7 +412,6 @@ public class RecordFragment extends Fragment {
                             if (currentSeats != null) {
                                 int newAvailableSeats = currentSeats.intValue() + numberClients;
 
-                                // Обновляем количество мест
                                 db.collection("service")
                                         .document(serviceId)
                                         .update("availableSeats", newAvailableSeats)

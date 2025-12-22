@@ -40,15 +40,9 @@ public class AddFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add, container, false);
-
-        // Инициализация Firestore
         db = FirebaseFirestore.getInstance();
         calendar = Calendar.getInstance();
-
-        // Инициализация элементов интерфейса
         initViews(view);
-
-        // Настройка обработчиков событий
         setupListeners();
 
         return view;
@@ -71,23 +65,18 @@ public class AddFragment extends Fragment {
     }
 
     private void setupListeners() {
-        // Выбор даты
         buttonSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePicker();
             }
         });
-
-        // Выбор времени
         buttonSelectTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimePicker();
             }
         });
-
-        // Добавление услуги в базу данных
         buttonAddService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,28 +121,22 @@ public class AddFragment extends Fragment {
     }
 
     private void addServiceToFirestore() {
-        // Получение данных из полей ввода
         String name = editTextName.getText().toString().trim();
         String description = editTextDescription.getText().toString().trim();
         String trainerName = editTextTrainerName.getText().toString().trim();
         String data = editTextData.getText().toString().trim();
         String time = editTextTime.getText().toString().trim();
 
-        // Проверка заполненности обязательных полей
         if (name.isEmpty() || description.isEmpty() || trainerName.isEmpty() ||
                 data.isEmpty() || time.isEmpty()) {
             Toast.makeText(requireContext(), "Заполните все обязательные поля", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // Парсинг числовых значений
         try {
             double price = Double.parseDouble(editTextPrice.getText().toString().trim());
             int duration = Integer.parseInt(editTextDuration.getText().toString().trim());
             int maxClients = Integer.parseInt(editTextMaxClients.getText().toString().trim());
             int availableSeats = Integer.parseInt(editTextAvailableSeats.getText().toString().trim());
-
-            // Создание объекта для записи в Firestore
             Map<String, Object> service = new HashMap<>();
             service.put("name", name);
             service.put("description", description);
@@ -164,9 +147,7 @@ public class AddFragment extends Fragment {
             service.put("duration", duration);
             service.put("maxClients", maxClients);
             service.put("availableSeats", availableSeats);
-            service.put("createdAt", System.currentTimeMillis()); // Дополнительное поле с timestamp
-
-            // Добавление документа в коллекцию "services"
+            service.put("createdAt", System.currentTimeMillis());
             db.collection("service")
                     .add(service)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

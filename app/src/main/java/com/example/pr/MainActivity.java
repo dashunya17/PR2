@@ -33,23 +33,18 @@ public class MainActivity extends AppCompatActivity implements AdminLoginDialogF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Инициализация Firestore
         db = FirebaseFirestore.getInstance();
         serviceList = new ArrayList<>();
         serviceTitles = new ArrayList<>();
 
-        // Инициализация UI элементов
         btnAdmin = findViewById(R.id.button);
         btnRecord = findViewById(R.id.button2);
         listView = findViewById(R.id.listView1);
 
-        // Создание адаптера для ListView
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, serviceTitles);
         listView.setAdapter(adapter);
 
-        // Обработка клика по элементу списка
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -59,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements AdminLoginDialogF
             }
         });
 
-        // Кнопка администратора
         btnAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements AdminLoginDialogF
             }
         });
 
-        // Кнопка записи
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements AdminLoginDialogF
             }
         });
 
-        // Загрузка данных из Firestore
         loadServicesFromFirestore();
     }
 
@@ -94,20 +86,17 @@ public class MainActivity extends AppCompatActivity implements AdminLoginDialogF
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 try {
-                                    // Получаем данные из документа
                                     String name = document.getString("name");
                                     String description = document.getString("description");
                                     String trainerName = document.getString("trainerName");
                                     String data = document.getString("data");
                                     String time = document.getString("time");
 
-                                    // Получаем числовые значения
                                     Double price = document.getDouble("price");
                                     Long duration = document.getLong("duration");
                                     Long maxClients = document.getLong("maxClients");
                                     Long availableSeats = document.getLong("availableSeats");
 
-                                    // Создаем объект Service
                                     Service service = new Service();
                                     service.setId(document.getId());
                                     service.setName(name != null ? name : "Не указано");
@@ -122,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements AdminLoginDialogF
 
                                     serviceList.add(service);
 
-                                    // Формируем строку для отображения в списке
                                     String displayText = name + " - " + data + " " + time;
                                     if (price != null) {
                                         displayText += " (" + price + " руб)";
@@ -138,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements AdminLoginDialogF
 
                             adapter.notifyDataSetChanged();
 
-                            // Показываем сообщение, если список пуст
                             if (serviceList.isEmpty()) {
                                 Toast.makeText(MainActivity.this, "Нет доступных услуг", Toast.LENGTH_SHORT).show();
                                 listView.setVisibility(View.GONE);
@@ -162,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements AdminLoginDialogF
 
         Service service = serviceList.get(position);
 
-        // Создаем диалог с деталями услуги
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle(service.getName());
 
@@ -175,7 +161,6 @@ public class MainActivity extends AppCompatActivity implements AdminLoginDialogF
                         "Максимум клиентов: " + service.getMaxClients() + "\n" +
                         "Доступные места: " + service.getAvailableSeats() + "\n\n";
 
-        // Добавляем описание, если оно есть
         if (service.getDescription() != null && !service.getDescription().isEmpty()) {
             details += "Описание:\n" + service.getDescription();
         }
@@ -183,10 +168,9 @@ public class MainActivity extends AppCompatActivity implements AdminLoginDialogF
         builder.setMessage(details);
         builder.setPositiveButton("OK", null);
 
-        // Добавляем кнопку "Записаться", если есть свободные места
         if (service.getAvailableSeats() > 0) {
             builder.setNeutralButton("Записаться", (dialog, which) -> {
-                // Открываем активити для записи
+
                 openRegistrationActivity(service);
             });
         }
@@ -199,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements AdminLoginDialogF
                 "Запись на " + service.getName(),
                 Toast.LENGTH_SHORT).show();
 
-        // Открываем активити для записи на услугу
         Intent intent = new Intent(this, RegistrationActivity.class);
         intent.putExtra("service_id", service.getId());
         intent.putExtra("service_name", service.getName());
@@ -226,7 +209,6 @@ public class MainActivity extends AppCompatActivity implements AdminLoginDialogF
     @Override
     public void onLoginSuccess() {
         Toast.makeText(this, "Доступ разрешён", Toast.LENGTH_SHORT).show();
-        // После успешной авторизации можно открыть панель администратора
         Intent intent = new Intent(this,MainActivity2.class);
         startActivity(intent);
     }
@@ -239,11 +221,6 @@ public class MainActivity extends AppCompatActivity implements AdminLoginDialogF
     @Override
     protected void onResume() {
         super.onResume();
-        // Обновляем данные при возвращении на активити
         loadServicesFromFirestore();
-    }
-    public void OnClickRegistration(View view){
-        Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
-        startActivity(intent);
     }
 }

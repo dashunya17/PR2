@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:padding="5dp">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -19,14 +18,15 @@
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="186dp"
+            android:layout_width="238dp"
             android:layout_height="50dp"
             android:layout_weight="1"
+
             android:text="Запись" />
 
         <Button
             android:id="@+id/button"
-            android:layout_width="201dp"
+            android:layout_width="222dp"
             android:layout_height="50dp"
             android:text="Администратор " />
 
@@ -36,14 +36,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:background="#FFFFFF"
         android:orientation="vertical"></LinearLayout>
 
     <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
+        android:layout_height="match_parent"
+        android:background="#FFFFFF" />
 
 
 </LinearLayout>

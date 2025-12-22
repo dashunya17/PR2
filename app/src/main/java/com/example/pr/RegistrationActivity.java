@@ -54,18 +54,11 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        // Инициализация Firestore
         db = FirebaseFirestore.getInstance();
         calendar = Calendar.getInstance();
         servicesList = new ArrayList<>();
-
-        // Инициализация UI элементов
         initViews();
-
-        // Устанавливаем сегодняшнюю дату по умолчанию
         setCurrentDate();
-
-        // Загружаем услуги на выбранную дату
         loadServicesForDate(selectedDate);
     }
 
@@ -81,13 +74,11 @@ public class RegistrationActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
         progressBar = findViewById(R.id.progressBar);
 
-        // Настройка адаптера для Spinner
         servicesAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, new ArrayList<String>());
         servicesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerServices.setAdapter(servicesAdapter);
 
-        // Обработчик выбора услуги из Spinner
         spinnerServices.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -99,7 +90,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     tvServiceInfo.setText("Выберите услугу для просмотра деталей");
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 selectedService = null;
@@ -107,7 +97,6 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
-        // Обработчик кнопки выбора даты
         btnSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +104,6 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
-        // Обработчик кнопки регистрации
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +111,6 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
-        // Обработчик изменения количества клиентов
         etNumberClients.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -136,18 +123,14 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void setupAutoScrollForEditTexts() {
-        // Для фамилии
         etSurname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    // Прокручиваем к полю фамилии
                     scrollToView(etSurname);
                 }
             }
         });
-
-        // Для имени
         etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -157,7 +140,6 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
-        // Для телефона
         etPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -167,7 +149,6 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
-        // Для количества клиентов
         etNumberClients.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -178,15 +159,11 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
     private void scrollToView(final View view) {
-        // Находим ScrollView
         final ScrollView scrollView = findViewById(R.id.scrollView);
-
         if (scrollView != null) {
-            // Используем postDelayed для гарантированного скролла после обновления UI
             scrollView.post(new Runnable() {
                 @Override
                 public void run() {
-                    // Рассчитываем положение для скролла
                     int scrollY = calculateScrollPosition(view, scrollView);
                     scrollView.smoothScrollTo(0, scrollY);
                 }
@@ -195,21 +172,12 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private int calculateScrollPosition(View view, ScrollView scrollView) {
-        // Получаем координаты View относительно ScrollView
         int[] location = new int[2];
         view.getLocationOnScreen(location);
-
-        // Получаем координаты ScrollView
         int[] scrollLocation = new int[2];
         scrollView.getLocationOnScreen(scrollLocation);
-
-        // Вычисляем смещение
         int y = location[1] - scrollLocation[1];
-
-        // Добавляем отступ, чтобы View не было в самом верху
-        int offset = 100; // 100 пикселей отступа сверху
-
-        // Проверяем, чтобы не выйти за границы
+        int offset = 100;
         int maxScroll = scrollView.getChildAt(0).getHeight() - scrollView.getHeight();
         return Math.min(Math.max(0, y - offset), maxScroll);
     }
@@ -232,8 +200,6 @@ public class RegistrationActivity extends AppCompatActivity {
                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
                         selectedDate = dateFormat.format(calendar.getTime());
                         tvSelectedDate.setText("Выбранная дата: " + selectedDate);
-
-                        // Загружаем услуги на новую дату
                         loadServicesForDate(selectedDate);
                     }
                 },
@@ -241,8 +207,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
-
-        // Устанавливаем минимальную дату (сегодня)
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
 
         datePickerDialog.show();
@@ -255,10 +219,8 @@ public class RegistrationActivity extends AppCompatActivity {
         servicesAdapter.add("-- Выберите услугу --");
         selectedService = null;
         tvServiceInfo.setText("Загрузка услуг...");
-
-        // Загружаем услуги на выбранную дату из таблицы service
         db.collection("service")
-                .whereEqualTo("data", date) // Фильтр по полю "data"
+                .whereEqualTo("data", date)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -270,7 +232,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 try {
-                                    // Получаем данные из документа
                                     String name = document.getString("name");
                                     String description = document.getString("description");
                                     String trainerName = document.getString("trainerName");
@@ -282,7 +243,6 @@ public class RegistrationActivity extends AppCompatActivity {
                                     Long maxClients = document.getLong("maxClients");
                                     Long availableSeats = document.getLong("availableSeats");
 
-                                    // Создаем объект Service
                                     Service service = new Service();
                                     service.setId(document.getId());
                                     service.setName(name != null ? name : "Не указано");
@@ -297,7 +257,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
                                     servicesList.add(service);
 
-                                    // Формируем строку для отображения в Spinner
                                     String serviceInfo = service.getName() +
                                             " (" + service.getTime() +
                                             ", " + service.getAvailableSeats() +
@@ -378,20 +337,16 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void registerForService() {
-        // Валидация выбора услуги
         if (selectedService == null) {
             Toast.makeText(this, "Выберите услугу из списка", Toast.LENGTH_SHORT).show();
             spinnerServices.requestFocus();
             return;
         }
-
-        // Получаем данные из полей ввода
         String surname = etSurname.getText().toString().trim();
         String name = etName.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
         String numberClientsStr = etNumberClients.getText().toString().trim();
 
-        // Валидация полей
         if (TextUtils.isEmpty(surname)) {
             etSurname.setError("Введите фамилию");
             etSurname.requestFocus();
@@ -424,8 +379,6 @@ public class RegistrationActivity extends AppCompatActivity {
             etNumberClients.requestFocus();
             return;
         }
-
-        // Проверка доступных мест
         if (numberClients <= 0) {
             etNumberClients.setError("Количество клиентов должно быть больше 0");
             etNumberClients.requestFocus();
@@ -437,35 +390,25 @@ public class RegistrationActivity extends AppCompatActivity {
             etNumberClients.requestFocus();
             return;
         }
-
-        // Проверка формата телефона
         if (!isValidPhone(phone)) {
             etPhone.setError("Введите корректный номер телефона");
             etPhone.requestFocus();
             return;
         }
-
-        // Создание и сохранение записи
         saveRecordToFirestore(surname, name, phone, numberClients);
     }
 
     private boolean isValidPhone(String phone) {
-        // Удаляем все нецифровые символы
         String phoneDigits = phone.replaceAll("[^0-9]", "");
-        // Проверяем, что осталось минимум 10 цифр
         return phoneDigits.length() >= 10;
     }
 
     private void saveRecordToFirestore(String surname, String name, String phone, int numberClients) {
-        // Показываем прогресс
         progressBar.setVisibility(View.VISIBLE);
         btnRegister.setEnabled(false);
-
-        // Получаем текущую дату и время
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault());
         String registrationDateTime = sdf.format(new Date());
 
-        // Создаем запись для таблицы record
         Map<String, Object> record = new HashMap<>();
         record.put("IdService", selectedService.getId());
         record.put("surname", surname);
@@ -474,7 +417,6 @@ public class RegistrationActivity extends AppCompatActivity {
         record.put("numberClients", numberClients);
         record.put("registrationDate", registrationDateTime);
 
-        // Дополнительная информация об услуге (для удобства)
         record.put("serviceName", selectedService.getName());
         record.put("serviceDate", selectedService.getData());
         record.put("serviceTime", selectedService.getTime());
@@ -482,7 +424,6 @@ public class RegistrationActivity extends AppCompatActivity {
         record.put("servicePrice", selectedService.getPrice());
         record.put("totalPrice", selectedService.getPrice() * numberClients);
 
-        // Сохраняем в коллекцию "record"
         db.collection("record")
                 .add(record)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -490,7 +431,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     public void onSuccess(DocumentReference documentReference) {
                         String recordId = documentReference.getId();
 
-                        // Обновляем количество доступных мест в таблице service
                         updateServiceAvailableSeats(numberClients, recordId);
                     }
                 })
@@ -520,13 +460,8 @@ public class RegistrationActivity extends AppCompatActivity {
                         btnRegister.setEnabled(true);
 
                         if (task.isSuccessful()) {
-                            // Показываем успешное сообщение
                             showSuccessMessage(recordId, numberClients);
-
-                            // Обновляем список услуг на текущую дату
                             loadServicesForDate(selectedDate);
-
-                            // Очищаем форму
                             clearForm();
                         } else {
                             Toast.makeText(RegistrationActivity.this,
@@ -539,7 +474,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void showSuccessMessage(String recordId, int numberClients) {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle("✅ Запись успешно оформлена!");
+        builder.setTitle(" Запись успешно оформлена!");
 
         String message = "Номер записи: " + recordId.substring(0, 8) + "\n\n" +
                 "Услуга: " + selectedService.getName() + "\n" +
@@ -555,7 +490,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
         builder.setMessage(message);
         builder.setPositiveButton("OK", (dialog, which) -> {
-            // Диалог закрывается автоматически
         });
 
         builder.show();
@@ -570,8 +504,6 @@ public class RegistrationActivity extends AppCompatActivity {
         selectedService = null;
         tvServiceInfo.setText("Выберите услугу для просмотра деталей");
     }
-
-    // Обработчик кнопки "Назад"
     public void onBackClick(View view) {
         finish();
     }

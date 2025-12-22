@@ -4,6 +4,7 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:padding="16dp">
 
     <LinearLayout
@@ -11,209 +12,193 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Заголовок -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:text="Запись на услугу"
             android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp"/>
+            android:textStyle="bold" />
 
-        <!-- Выбор даты -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="📅 Выберите дату посещения:"
+            android:text=" Выберите дату посещения:"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvSelectedDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/white"
+                android:padding="8dp"
                 android:text="Дата не выбрана"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="@android:color/transparent"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnSelectDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Выбрать"
-                app:backgroundTint="?attr/colorPrimary"/>
+                app:backgroundTint="?attr/colorPrimary" />
 
         </LinearLayout>
 
-        <!-- Выбор услуги -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="🎯 Выберите услугу:"
+            android:layout_marginTop="20dp"
+            android:text=" Выберите услугу:"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"/>
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinnerServices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:padding="8dp"/>
+            android:padding="8dp" />
 
-        <!-- Информация о выбранной услуге -->
         <TextView
             android:id="@+id/tvServiceInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Выберите услугу для просмотра деталей"
-            android:textSize="14sp"
-            android:padding="12dp"
             android:layout_marginTop="12dp"
             android:background="#F5F5F5"
-            android:lineSpacingExtra="4dp"/>
+            android:lineSpacingExtra="4dp"
+            android:padding="12dp"
+            android:text="Выберите услугу для просмотра деталей"
+            android:textSize="14sp" />
 
-        <!-- Разделитель -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#E0E0E0"
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:background="#E0E0E0" />
 
-        <!-- Данные клиента -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="👤 Данные клиента"
             android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
-        <!-- Фамилия -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Фамилия*"
-            android:textSize="16sp"
-            android:layout_marginTop="16dp"/>
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/etSurname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
             android:hint="Введите фамилию"
             android:inputType="textCapWords"
             android:maxLines="1"
-            android:padding="12dp"
-            android:background="@android:drawable/editbox_background"/>
-
-        <!-- Имя -->
+            android:padding="12dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Имя*"
-            android:textSize="16sp"
-            android:layout_marginTop="16dp"/>
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
             android:hint="Введите имя"
             android:inputType="textCapWords"
             android:maxLines="1"
-            android:padding="12dp"
-            android:background="@android:drawable/editbox_background"/>
+            android:padding="12dp" />
 
-        <!-- Телефон -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Телефон*"
-            android:textSize="16sp"
-            android:layout_marginTop="16dp"/>
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/etPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
             android:hint="+7 (999) 123-45-67"
             android:inputType="phone"
             android:maxLines="1"
-            android:padding="12dp"
-            android:background="@android:drawable/editbox_background"/>
+            android:padding="12dp" />
 
-        <!-- Количество клиентов -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Количество клиентов*"
-            android:textSize="16sp"
-            android:layout_marginTop="16dp"/>
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/etNumberClients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
             android:hint="Введите количество (макс: 0)"
             android:inputType="number"
             android:maxLines="1"
-            android:padding="12dp"
-            android:background="@android:drawable/editbox_background"/>
+            android:padding="12dp" />
 
-        <!-- Кнопки -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="32dp">
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal">
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Назад"
                 android:layout_marginEnd="8dp"
-                android:onClick="onBackClick"/>
+                android:layout_weight="1"
+                android:onClick="onBackClick"
+                android:text="Назад" />
 
             <Button
                 android:id="@+id/btnRegister"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Записаться"
                 android:backgroundTint="?attr/colorPrimary"
-                android:textColor="@android:color/white"/>
+                android:text="Записаться" />
 
         </LinearLayout>
 
-
-        <!-- ProgressBar -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
-        <!-- Пояснение -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="* - обязательные поля для заполнения"
-            android:textSize="12sp"
             android:textColor="#757575"
-            android:layout_marginTop="20dp"/>
+            android:textSize="12sp" />
 
 
     </LinearLayout>

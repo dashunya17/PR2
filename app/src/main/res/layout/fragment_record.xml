@@ -6,26 +6,27 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Заголовок -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Управление записями"
+        android:background="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginBottom="20dp"/>
 
-    <!-- Выбор даты -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Выберите дату:"
+        android:background="#FFFFFF"
         android:textSize="16sp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="#FFFFFF"
         android:layout_marginTop="8dp">
 
         <TextView
@@ -34,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Дата не выбрана"
+            android:background="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
             android:padding="8dp"/>
@@ -46,13 +48,12 @@
             app:backgroundTint="?attr/colorPrimary"/>
 
     </LinearLayout>
-
-    <!-- Выбор услуги -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Выберите услугу:"
         android:textSize="16sp"
+        android:background="#FFFFFF"
         android:layout_marginTop="20dp"/>
 
     <Spinner
@@ -61,8 +62,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:padding="8dp"/>
-
-    <!-- Статистика -->
     <TextView
         android:id="@+id/tvTotalRecords"
         android:layout_width="wrap_content"
@@ -73,8 +72,6 @@
         android:layout_marginTop="16dp"
         android:padding="8dp"
         android:background="#E3F2FD"/>
-
-    <!-- ProgressBar -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -82,18 +79,15 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:visibility="gone"/>
-
-    <!-- Сообщение при пустом списке -->
     <TextView
         android:id="@+id/tvEmpty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="#FFFFFF"
         android:layout_marginTop="40dp"
         android:text="Выберите услугу для просмотра записей"
         android:textSize="16sp"/>
-
-    <!-- RecyclerView для отображения записей -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

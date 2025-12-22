@@ -42,7 +42,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
         holder.textViewService.setText("Услуга: " + record.getServiceName());
         holder.textViewDate.setText("Запись: " + record.getRegistrationDate());
 
-        // Обработчики кликов
         holder.itemView.setOnClickListener(v -> listener.onItemClick(position));
         holder.buttonDelete.setOnClickListener(v -> listener.onDeleteClick(position));
     }
